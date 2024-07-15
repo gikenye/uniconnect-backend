@@ -1,0 +1,114 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type Query {
+  fetchUserData(token:String!):User!
+  checkUserName(name:String!):Boolean!
+  FetchBusiness(token:String!,bizId:String!):Business!
+  FetchBusinessList(input:FetchBusinessListInput!):[Business!]!
+  FetchComments(token:String!,bizId:String!):[Comment!]!
+  FetchLikedBusiness(token:String!):[Business!]!
+  CheckIFLiked(token:String!,bizId:String!):Boolean!
+}
+
+type Mutation {
+ Register(input:RegisterInput!): AuthPayload!
+ Login(input:LoginInput!):AuthPayload!
+ CreateBusiness(input:CreateBusinessInput!):Boolean!
+ PostComment(input:PostCommentInput!):Boolean!
+ LikeBusiness(token:String!,bizId:String!):Boolean!
+ DeleteBusiness(token:String!,bizId:String!):Boolean!
+ EditBusiness(input:CreateBusinessInput!,bizId:String!):Boolean!
+ ChangePassword(input: ChangePasswordInput!): Boolean!
+ VerifyUser(token:String!,otp:String!):Boolean!
+}
+scalar Time
+
+
+input ChangePasswordInput {
+  token: String!
+  oldPassword: String!
+  newPassword: String!
+  confirmNewPassword: String!
+}
+
+input PostCommentInput {
+  token:String!
+  bizId:String!
+  message:String!
+}
+
+type AuthPayload {
+  token:String!
+}
+
+input FetchBusinessListInput {
+  token:String!
+  type:BusinessType
+  searchTerm:String
+  mine:Boolean
+}
+
+type Business {
+  id:String!
+  name:String!
+  type:BusinessType!
+  description:String!
+  location:String!
+  website:String!
+  contact:String!
+  image:String!
+  ownerName:String!
+  likes:String!
+}
+
+type Comment {
+  businessId:String!
+	sender:String!
+  Message:String!
+  date:Time!
+}
+
+input LoginInput {
+  emailorUsername:String!
+  password:String!
+}
+input RegisterInput {
+  fullname:String!
+  username:String!
+  email:String!
+  password:String!
+  confirmpassword:String!
+}
+
+
+input CreateBusinessInput {
+  token:String!
+  type:BusinessType!
+  name:String!
+  description:String!
+  location:String!
+  website:String
+  contact:String!
+  image:String!
+}
+
+type User {
+  id:String!
+  name: String!
+	email: String!
+	username: String!
+	profilePhoto: String!
+  verified: Boolean!
+}
+
+enum BusinessType {
+  SHOP
+  SERVICE
+  EVENT
+  JOB
+  NEWS
+  HOUSING
+  TUTOR
+}
